@@ -8,7 +8,6 @@ def arithmetic_arranger(problems_list, result):
     arithmetic_operation.append("-----")
     for arithmetic_subitem in arithmetic_operation:
       arithmetic_subitem = f"{arithmetic_subitem[0]}{arithmetic_subitem[1]}{arithmetic_subitem[2]}"
-      print("--------------------------", arithmetic_subitem)
       if(result):
         if '+' in arithmetic_operation:
           arranged_problems = int(arithmetic_operation[0]) + int(arithmetic_operation[2])
