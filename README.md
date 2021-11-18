@@ -1,8 +1,13 @@
 # fcc-scientific-computing-with-python
 
-# Problem 1
+## Projects
 
-The first problem to directly run scrips in Replit folders structure. Its possible to use the right-sided console to acess the files and run directly.
-There are main.py, function file, and tests.
-The file where we develop is the function file. Its already being called in main.py
+1. Arithmetic Formatter :heavy_check_mark:
 
+2. Time Calculator :hourglass_flowing_sand:
+
+3. Budget App :bar_chart:
+
+4. Polygon Area Calculator :triangular_ruler:
+
+5. Probability Calculator :slot_machine:
