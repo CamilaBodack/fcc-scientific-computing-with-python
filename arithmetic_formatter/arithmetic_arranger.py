@@ -1,12 +1,17 @@
 
-problems_list = ["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"]
+problems_list = ['3801 - 2', '123 + 49']
 
 
-def arithmetic_arranger(problems_list, result):
+def arithmetic_arranger(problems_list, result=False):
     operator_list = split_list(problems_list)
     vertical_align = separe_operators(operator_list)
+    final_str = ""
     for item in vertical_align:
-        print(item)
+        final_str += item
+    print(">>>>>>>>>>>>>>>>>>>>>>>")
+    print(final_str, "FINAL")
+    print(">>>>>>>>>>>>>>>>>>>>>>>")
+    return final_str
 
 
 def split_list(list):
@@ -17,9 +22,12 @@ def split_list(list):
     return splitted_list
 
 def separe_operators(list):
-    vertical_arrange = []
+    line_zero = ""
+    line_one = ""
+    line_two = ""
+    each_line = ""
     lines = []
-    for index, item in enumerate(list):
+    for item in list:
         major_item = max(item)
         separe_result = "-" * (len(major_item) + 2)
         item.append(separe_result)
@@ -28,7 +36,16 @@ def separe_operators(list):
                 item[0] =  f"{item[0]:>{len(separe_result)}}"
                 item[1] =  f"{item[1]} {item[2]:>{len(separe_result)-2}}"
                 separator =  f"{separe_result}"
-        lines.append(f"{item[0]}\n{item[1]}\n{separator}")
+                line_zero += item[0]
+                line_one += item[1]
+                line_two += separator
+                each_line = (
+                            f"{line_zero}"
+                            f"{line_one}"
+                            f"{line_two}"
+                )
+        print(each_line, "@@@@@@@@")
+        lines.append(f"{each_line}     \n")
     return lines
 
 
