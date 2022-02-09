@@ -8,9 +8,6 @@ def arithmetic_arranger(problems_list, result=False):
     final_str = ""
     for item in vertical_align:
         final_str += item
-    print(">>>>>>>>>>>>>>>>>>>>>>>")
-    print(final_str, "FINAL")
-    print(">>>>>>>>>>>>>>>>>>>>>>>")
     return final_str
 
 
@@ -25,27 +22,22 @@ def separe_operators(list):
     line_zero = ""
     line_one = ""
     line_two = ""
-    each_line = ""
     lines = []
     for item in list:
         major_item = max(item)
-        separe_result = "-" * (len(major_item) + 2)
+        separe_result = "-" * (len(major_item)+2)
         item.append(separe_result)
-        for subitem in range(len(item)):
+        for index in range(len(item)):
             if item[1] == "+" or item[1] == "-":
                 item[0] =  f"{item[0]:>{len(separe_result)}}"
                 item[1] =  f"{item[1]} {item[2]:>{len(separe_result)-2}}"
                 separator =  f"{separe_result}"
-                line_zero += item[0]
-                line_one += item[1]
-                line_two += separator
-                each_line = (
-                            f"{line_zero}"
-                            f"{line_one}"
-                            f"{line_two}"
-                )
-        print(each_line, "@@@@@@@@")
-        lines.append(f"{each_line}     \n")
+                line_zero += item[0] + "    "
+                line_one += item[1] + "    "
+                line_two += separator + "    "
+    lines.append(f"{line_zero}\n")
+    lines.append(f"{line_one}\n")
+    lines.append(f"{line_two}\n")
     return lines
 
 
