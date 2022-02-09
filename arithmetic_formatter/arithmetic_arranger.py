@@ -35,6 +35,8 @@ def separe_operators(list):
                 line_zero += item[0] + "    "
                 line_one += item[1] + "    "
                 line_two += separator + "    "
+    line_zero = line_zero.rstrip()
+    line_one = line_one.rstrip()
     lines.append(f"{line_zero}\n")
     lines.append(f"{line_one}\n")
     lines.append(f"{line_two}\n")
