@@ -1,4 +1,6 @@
 
+import re
+
 problems_list = ['3801 - 2', '123 + 49']
 
 
@@ -24,8 +26,8 @@ def separe_operators(list):
     line_two = ""
     lines = []
     for item in list:
-        major_item = max(item)
-        separe_result = "-" * (len(major_item)+2)
+        major_value = make_max_int(item)
+        separe_result = "-" * (len(str(major_value))+2)
         item.append(separe_result)
         for index in range(len(item)):
             if item[1] == "+" or item[1] == "-":
@@ -42,5 +44,12 @@ def separe_operators(list):
     lines.append(f"{line_two}\n")
     return lines
 
+def make_max_int(list):
+    only_digits = []
+    for item in list:
+        if not item.endswith(("+","-")):
+            only_digits.append(int(item))
+    return max(only_digits)
+   
 
 print(arithmetic_arranger(problems_list, result=True))
