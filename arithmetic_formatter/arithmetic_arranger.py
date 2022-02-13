@@ -1,5 +1,4 @@
-
-problems_list = ['3801 - 2', '45 + 43']
+problems_list = ['24 + 85215', '3801 - 2', '45 + 43', '123 + 49']
 
 
 def arithmetic_arranger(problems_list, result=False):
@@ -7,29 +6,23 @@ def arithmetic_arranger(problems_list, result=False):
     vertical_align = separe_operators(operator_list)
     if len(problems_list) > 5:
         return "Error: Too many problems."
-    if has_unexpected_char(operator_list):
+    if has_unexpected_char(problems_list):
         return "Error: Operator must be '+' or '-'."
+    if has_extra_digit(problems_list):
+        return "Error: Numbers cannot be more than four digits."
     final_str = ""
     for item in vertical_align:
         final_str += item
     return final_str
 
 
-def has_unexpected_char(arrange_list):
-    not_allowed_items = []
-    for arrange in arrange_list:
-        for item in arrange:
-            if not (str(item).strip().isdigit() or str(item).strip().startswith(("+", "-"))):
-                not_allowed_items.append(item)
-    return len(not_allowed_items) > 0
-    
-
-def split_list(arrange_list):
+def split_list(list):
     splitted_list = []
-    for item in arrange_list:
+    for item in list:
         item = item.split(" ")
         splitted_list.append(item)
     return splitted_list
+
 
 def separe_operators(arrange_list):
     line_zero = ""
@@ -38,13 +31,13 @@ def separe_operators(arrange_list):
     lines = []
     for item in arrange_list:
         major_value = make_max_int(item)
-        separe_result = "-" * (len(str(major_value))+2)
+        separe_result = "-" * (len(str(major_value)) + 2)
         item.append(separe_result)
         for index in range(len(item)):
             if item[1] == "+" or item[1] == "-":
-                item[0] =  f"{item[0]:>{len(separe_result)}}"
-                item[1] =  f"{item[1]} {item[2]:>{len(separe_result)-2}}"
-                separator =  f"{separe_result}"
+                item[0] = f"{item[0]:>{len(separe_result)}}"
+                item[1] = f"{item[1]} {item[2]:>{len(separe_result)-2}}"
+                separator = f"{separe_result}"
                 line_zero += item[0] + "    "
                 line_one += item[1] + "    "
                 line_two += separator + "    "
@@ -56,12 +49,34 @@ def separe_operators(arrange_list):
     lines.append(f"{line_two}")
     return lines
 
+
+def has_extra_digit(list):
+    arrange_elements = split_list(list)
+    extra_digits_elements = []
+    for arrange in arrange_elements:
+        for each_element in arrange:
+            if len(each_element) > 4:
+                extra_digits_elements.append(each_element)
+    return len(extra_digits_elements) > 0
+
+
+def has_unexpected_char(list):
+    arrange = split_list(list)
+    not_allowed_items = []
+    for arrange in list:
+        for item in arrange:
+            item = item.strip()
+            if not (item.isdigit() or item.startswith(("+", "-")) or item == ""):
+                not_allowed_items.append(item)
+    return len(not_allowed_items) > 0
+
+
 def make_max_int(arrange_list):
     only_digits = []
     for item in arrange_list:
         if item.isdigit():
             only_digits.append(int(item))
     return max(only_digits)
-   
+
 
 arithmetic_arranger(problems_list, result=False)
