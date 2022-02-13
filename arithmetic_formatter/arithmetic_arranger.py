@@ -1,20 +1,28 @@
 
-problems_list = ['44 + 815', '909 - 2', '45 + 43', '123 + 49',
-          '888 + 40', '653 + 87']
+problems_list = ['3801 - 2', '45 + 43']
 
 
 def arithmetic_arranger(problems_list, result=False):
-    if len(problems_list) > 5:
-        return arrange_too_long()
     operator_list = split_list(problems_list)
     vertical_align = separe_operators(operator_list)
+    if len(problems_list) > 5:
+        return "Error: Too many problems."
+    if has_unexpected_char(operator_list):
+        return "Error: Operator must be '+' or '-'."
     final_str = ""
     for item in vertical_align:
         final_str += item
     return final_str
 
-def arrange_too_long():
-    return "Error: Too many problems."
+
+def has_unexpected_char(arrange_list):
+    not_allowed_items = []
+    for arrange in arrange_list:
+        for item in arrange:
+            if not (str(item).strip().isdigit() or str(item).strip().startswith(("+", "-"))):
+                not_allowed_items.append(item)
+    return len(not_allowed_items) > 0
+    
 
 def split_list(arrange_list):
     splitted_list = []
@@ -51,9 +59,9 @@ def separe_operators(arrange_list):
 def make_max_int(arrange_list):
     only_digits = []
     for item in arrange_list:
-        if not item.endswith(("+","-")):
+        if item.isdigit():
             only_digits.append(int(item))
     return max(only_digits)
    
 
-print(arithmetic_arranger(problems_list, result=False))
+arithmetic_arranger(problems_list, result=False)
