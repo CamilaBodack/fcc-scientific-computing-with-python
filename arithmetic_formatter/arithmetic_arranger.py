@@ -1,4 +1,4 @@
-problems_list = ['24 + 85215', '3801 - 2', '45 + 43', '123 + 49']
+problems_list = ['98 + 3g5', '3801 - 2', '45 + 43', '123 + 49']
 
 
 def arithmetic_arranger(problems_list, result=False):
@@ -6,10 +6,12 @@ def arithmetic_arranger(problems_list, result=False):
     vertical_align = separe_operators(operator_list)
     if len(problems_list) > 5:
         return "Error: Too many problems."
-    if has_unexpected_char(problems_list):
-        return "Error: Operator must be '+' or '-'."
+    if has_only_digits(problems_list):
+        return "Error: Numbers must only contain digits."
     if has_extra_digit(problems_list):
         return "Error: Numbers cannot be more than four digits."
+    if has_unexpected_operator(problems_list):
+        return "Error: Operator must be '+' or '-'."
     final_str = ""
     for item in vertical_align:
         final_str += item
@@ -49,6 +51,17 @@ def separe_operators(arrange_list):
     lines.append(f"{line_two}")
     return lines
 
+def has_only_digits(list):
+    arrange_elements = split_list(list)
+    non_digits = []
+    for arrange in arrange_elements:
+        for index in range(len(arrange)):
+            if index == 1:
+                continue
+            if not (arrange[index].isdigit()):
+                non_digits.append(arrange[index])
+    return len(non_digits) > 0
+
 
 def has_extra_digit(list):
     arrange_elements = split_list(list)
@@ -60,12 +73,14 @@ def has_extra_digit(list):
     return len(extra_digits_elements) > 0
 
 
-def has_unexpected_char(list):
+def has_unexpected_operator(list):
     arrange = split_list(list)
     not_allowed_items = []
-    for arrange in list:
-        for item in arrange:
-            item = item.strip()
+    for arrange_element in arrange:
+        for index in range(len(arrange_element)):
+            if index != 1:
+                continue
+            item = arrange_element[index].strip()
             if not (item.isdigit() or item.startswith(("+", "-")) or item == ""):
                 not_allowed_items.append(item)
     return len(not_allowed_items) > 0
@@ -79,4 +94,4 @@ def make_max_int(arrange_list):
     return max(only_digits)
 
 
-arithmetic_arranger(problems_list, result=False)
+print(arithmetic_arranger(problems_list, result=False))
