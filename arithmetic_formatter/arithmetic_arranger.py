@@ -1,9 +1,9 @@
-problems_list = ['98 + 3g5', '3801 - 2', '45 + 43', '123 + 49']
+#problems_list = ["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"]
 
 
-def arithmetic_arranger(problems_list, result=False):
+def arithmetic_arranger(problems_list, result=True):
     operator_list = split_list(problems_list)
-    vertical_align = separe_operators(operator_list)
+    vertical_align = mount_lines(operator_list, problems_list, result)
     if len(problems_list) > 5:
         return "Error: Too many problems."
     if has_only_digits(problems_list):
@@ -26,7 +26,7 @@ def split_list(list):
     return splitted_list
 
 
-def separe_operators(arrange_list):
+def mount_lines(arrange_list, problems_list, result):
     line_zero = ""
     line_one = ""
     line_two = ""
@@ -46,10 +46,29 @@ def separe_operators(arrange_list):
     line_zero = line_zero.rstrip()
     line_one = line_one.rstrip()
     line_two = line_two.rstrip()
-    lines.append(f"{line_zero}\n")
-    lines.append(f"{line_one}\n")
-    lines.append(f"{line_two}")
+    
+    if result:
+        line_results = add_line_result(problems_list)
+        line_results.rstrip()
+        lines.append(f"{line_zero}\n")
+        lines.append(f"{line_one}\n")
+        lines.append(f"{line_two}\n")
+        lines.append(f"{line_results}")
+    else:
+        lines.append(f"{line_zero}\n")
+        lines.append(f"{line_one}\n")
+        lines.append(f"{line_two}")
     return lines
+
+
+def add_line_result(list):
+    results = ""
+    expression = ""
+    for item in list:
+        expression = eval(item)
+        results += f"{expression:>{len(str(item))-2}}   "
+    return results
+
 
 def has_only_digits(list):
     arrange_elements = split_list(list)
@@ -94,4 +113,4 @@ def make_max_int(arrange_list):
     return max(only_digits)
 
 
-print(arithmetic_arranger(problems_list, result=False))
+#print(arithmetic_arranger(problems_list, result=True))
