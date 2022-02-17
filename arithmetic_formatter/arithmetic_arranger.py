@@ -1,4 +1,4 @@
-#problems_list = ["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"]
+problems_list = ["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"]
 
 
 def arithmetic_arranger(problems_list, result=True):
@@ -30,8 +30,11 @@ def mount_lines(arrange_list, problems_list, result):
     line_zero = ""
     line_one = ""
     line_two = ""
+    line_three = ""
     lines = []
     for item in arrange_list:
+        str_to_eval = prepare_eval(item)
+        result = str(eval(str_to_eval))
         major_value = make_max_int(item)
         separe_result = "-" * (len(str(major_value)) + 2)
         item.append(separe_result)
@@ -39,35 +42,39 @@ def mount_lines(arrange_list, problems_list, result):
             if item[1] == "+" or item[1] == "-":
                 item[0] = f"{item[0]:>{len(separe_result)}}"
                 item[1] = f"{item[1]} {item[2]:>{len(separe_result)-2}}"
+                result = f"{result:>{len(separe_result)}}"
                 separator = f"{separe_result}"
                 line_zero += item[0] + "    "
                 line_one += item[1] + "    "
                 line_two += separator + "    "
+                line_three += result + "    "
     line_zero = line_zero.rstrip()
     line_one = line_one.rstrip()
     line_two = line_two.rstrip()
+    line_three = line_three.rstrip()
     
     if result:
-        line_results = add_line_result(problems_list)
-        line_results.rstrip()
         lines.append(f"{line_zero}\n")
         lines.append(f"{line_one}\n")
         lines.append(f"{line_two}\n")
-        lines.append(f"{line_results}")
+        lines.append(f"{line_three}")
     else:
         lines.append(f"{line_zero}\n")
         lines.append(f"{line_one}\n")
         lines.append(f"{line_two}")
     return lines
 
+def prepare_eval(arrange):
+    str_arrange = ""
+    for item in arrange:
+        str_arrange += item
+    return str_arrange
 
-def add_line_result(list):
-    results = ""
+def add_result(list):
     expression = ""
     for item in list:
         expression = eval(item)
-        results += f"{expression:>{len(str(item))-2}}   "
-    return results
+    return expression
 
 
 def has_only_digits(list):
@@ -113,4 +120,4 @@ def make_max_int(arrange_list):
     return max(only_digits)
 
 
-#print(arithmetic_arranger(problems_list, result=True))
+print(arithmetic_arranger(problems_list, result=True))
