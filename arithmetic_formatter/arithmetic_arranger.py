@@ -1,9 +1,7 @@
-problems_list = ["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"]
+problems_list = ['3 + 855', '3801 - 2', '45 + 43', '123 + 49']
 
 
-def arithmetic_arranger(problems_list, result=True):
-    operator_list = split_list(problems_list)
-    vertical_align = mount_lines(operator_list, problems_list, result)
+def arithmetic_arranger(problems_list, result=False):
     if len(problems_list) > 5:
         return "Error: Too many problems."
     if has_only_digits(problems_list):
@@ -12,7 +10,11 @@ def arithmetic_arranger(problems_list, result=True):
         return "Error: Numbers cannot be more than four digits."
     if has_unexpected_operator(problems_list):
         return "Error: Operator must be '+' or '-'."
+    
+    operator_list = split_list(problems_list)
+    vertical_align = mount_lines(operator_list, result)
     final_str = ""
+
     for item in vertical_align:
         final_str += item
     return final_str
@@ -26,7 +28,7 @@ def split_list(list):
     return splitted_list
 
 
-def mount_lines(arrange_list, problems_list, result):
+def mount_lines(arrange_list, result):
     line_zero = ""
     line_one = ""
     line_two = ""
@@ -34,7 +36,7 @@ def mount_lines(arrange_list, problems_list, result):
     lines = []
     for item in arrange_list:
         str_to_eval = prepare_eval(item)
-        result = str(eval(str_to_eval))
+        eval_result = str(eval(str_to_eval))
         major_value = make_max_int(item)
         separe_result = "-" * (len(str(major_value)) + 2)
         item.append(separe_result)
@@ -42,39 +44,33 @@ def mount_lines(arrange_list, problems_list, result):
             if item[1] == "+" or item[1] == "-":
                 item[0] = f"{item[0]:>{len(separe_result)}}"
                 item[1] = f"{item[1]} {item[2]:>{len(separe_result)-2}}"
-                result = f"{result:>{len(separe_result)}}"
+                eval_result = f"{eval_result:>{len(separe_result)}}"
                 separator = f"{separe_result}"
                 line_zero += item[0] + "    "
                 line_one += item[1] + "    "
                 line_two += separator + "    "
-                line_three += result + "    "
+                line_three += eval_result + "    "
     line_zero = line_zero.rstrip()
     line_one = line_one.rstrip()
     line_two = line_two.rstrip()
     line_three = line_three.rstrip()
-    
+
+    lines.append(f"{line_zero}\n")
+    lines.append(f"{line_one}\n")
+
     if result:
-        lines.append(f"{line_zero}\n")
-        lines.append(f"{line_one}\n")
         lines.append(f"{line_two}\n")
         lines.append(f"{line_three}")
     else:
-        lines.append(f"{line_zero}\n")
-        lines.append(f"{line_one}\n")
         lines.append(f"{line_two}")
     return lines
+
 
 def prepare_eval(arrange):
     str_arrange = ""
     for item in arrange:
         str_arrange += item
     return str_arrange
-
-def add_result(list):
-    expression = ""
-    for item in list:
-        expression = eval(item)
-    return expression
 
 
 def has_only_digits(list):
