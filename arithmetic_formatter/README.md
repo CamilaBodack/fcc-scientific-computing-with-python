@@ -59,6 +59,7 @@ The function will return the correct conversion if the supplied problems are pro
 
 --- 
 All the text above was extracted from the arithmetic formatter's challenge 
+
 [FCC Reference](https://www.freecodecamp.org/learn/scientific-computing-with-python/scientific-computing-with-python-projects/arithmetic-formatter)
 
 --- 
