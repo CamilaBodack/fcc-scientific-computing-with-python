@@ -6,6 +6,7 @@ def add_time(start, duration, day=False):
     final = final_time(start, hour_start, minuts_start, hour_duration, minuts_duration)
     return final
 
+
 def get_hour(time_data: str) -> str:
     return time_data.split(":")[0]
 
@@ -16,9 +17,10 @@ def get_minuts(time_data: str) -> str:
     return minuts
 
 
-def get_mod_minuts(start_minuts: str, duration_minuts: str) -> int:
+def get_mod_minuts(start_minuts: str, duration_minuts: str) -> str:
     sum_minuts = int(start_minuts) + int(duration_minuts)
-    return sum_minuts % 60
+    mod_hour = sum_minuts % 60
+    return str(mod_hour).zfill(2)
 
 
 def get_extra_hour(start_minuts: str, duration_minuts: str) -> int:
@@ -27,8 +29,10 @@ def get_extra_hour(start_minuts: str, duration_minuts: str) -> int:
     sum_minuts = str(sum_minuts).split(".")[0]
     return int(sum_minuts)
 
+
 def get_period(start: str) -> str:
     return start.split(" ")[1]
+
 
 def final_time(
     start: str,
@@ -43,7 +47,11 @@ def final_time(
     period = get_period(start)
     if hour > 12:
         hour = hour - 12
+        if period == "AM":
+            period = "PM"
+        elif period == "PM":
+            period = "AM"
     return f"{hour}:{minuts} {period}"
 
 
-print(add_time("3:30 PM", "2:12", day=False))
+print(add_time("11:55 AM", "3:12", day=False))
