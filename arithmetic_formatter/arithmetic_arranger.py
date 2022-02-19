@@ -1,4 +1,4 @@
-problems_list = ['3 + 855', '3801 - 2', '45 + 43', '123 + 49']
+problems_list = ["3 + 855", "3801 - 2", "45 + 43", "123 + 49"]
 
 
 def arithmetic_arranger(problems_list, result=False):
@@ -10,11 +10,9 @@ def arithmetic_arranger(problems_list, result=False):
         return "Error: Numbers cannot be more than four digits."
     if has_unexpected_operator(problems_list):
         return "Error: Operator must be '+' or '-'."
-    
     operator_list = split_list(problems_list)
     vertical_align = mount_lines(operator_list, result)
     final_str = ""
-
     for item in vertical_align:
         final_str += item
     return final_str
@@ -54,7 +52,6 @@ def mount_lines(arrange_list, result):
     line_one = line_one.rstrip()
     line_two = line_two.rstrip()
     line_three = line_three.rstrip()
-
     lines.append(f"{line_zero}\n")
     lines.append(f"{line_one}\n")
 
