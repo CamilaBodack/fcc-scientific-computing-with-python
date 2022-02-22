@@ -33,6 +33,9 @@ def get_extra_hour(start_minuts: str, duration_minuts: str) -> int:
 def get_period(start: str) -> str:
     return start.split(" ")[1]
 
+def check_next_day(hour: int, period: str) -> str:
+    if (hour >= 24) or (hour >= 12 and period == "PM"):
+        return "(next day)"
 
 def final_time(
     start: str,
@@ -45,13 +48,18 @@ def final_time(
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
     period = get_period(start)
-    if hour > 12:
-        hour = hour - 12
+    next_day = check_next_day(hour, period)
+    if hour >= 12:
         if period == "AM":
             period = "PM"
         elif period == "PM":
             period = "AM"
-    return f"{hour}:{minuts} {period}"
+        if not (period == "PM" and hour == 12):
+            hour = hour - 12
+    if next_day:
+        return f"{hour}:{minuts} {period} {next_day}"
+    else:
+        return f"{hour}:{minuts} {period}"
 
 
-print(add_time("11:55 AM", "3:12", day=False))
+print(add_time("11:40 AM", "0:25"))
