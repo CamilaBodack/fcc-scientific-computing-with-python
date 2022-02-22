@@ -1,9 +1,9 @@
-def add_time(start, duration, day=False):
+def add_time(start, duration, day_of_week=False):
     hour_start = get_hour(start)
     minuts_start = get_minuts(start)
     hour_duration = get_hour(duration)
     minuts_duration = get_minuts(duration)
-    final = final_time(start, hour_start, minuts_start, hour_duration, minuts_duration)
+    final = final_time(start, hour_start, minuts_start, hour_duration, minuts_duration, day_of_week)
     return final
 
 
@@ -33,9 +33,45 @@ def get_extra_hour(start_minuts: str, duration_minuts: str) -> int:
 def get_period(start: str) -> str:
     return start.split(" ")[1]
 
+
 def check_next_day(hour: int, period: str) -> str:
     if (hour >= 24) or (hour >= 12 and period == "PM"):
         return "(next day)"
+
+
+def count_days(hours: int) -> int:
+    days = round(hours / 24)
+    if days > 1:
+        return days
+
+
+def days_of_week(day: str, total_days: int):
+    days = {
+        0: "Sunday",
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thurday",
+        5: "Friday",
+        6: "Saturday",
+    }
+    
+    start = 0
+    for key, value in days.items():
+        if day == value:
+            start = key
+
+    while(total_days > 0):
+        for key, day_of_week in days.items():
+            start = start + 1
+            if start == 6:
+                start = 0
+        total_days = total_days - 1
+    
+    for key, value in days.items():
+        if key == start:
+            return value
+
 
 def final_time(
     start: str,
@@ -43,12 +79,14 @@ def final_time(
     start_minuts: str,
     durarion_hour: str,
     duration_minuts: str,
+    day_of_week: str,
 ):
     hour = int(start_hour) + int(durarion_hour)
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
     period = get_period(start)
     next_day = check_next_day(hour, period)
+    days = count_days(hour)
     if hour >= 12:
         if period == "AM":
             period = "PM"
@@ -56,10 +94,13 @@ def final_time(
             period = "AM"
         if not (period == "PM" and hour == 12):
             hour = hour - 12
+    if days:
+        day_week = days_of_week(day_of_week, days)
+        return f"{hour}:{minuts} {period}, {day_week} ({days} days later)"
     if next_day:
         return f"{hour}:{minuts} {period} {next_day}"
     else:
         return f"{hour}:{minuts} {period}"
 
 
-print(add_time("11:40 AM", "0:25"))
+print(add_time("11:59 PM", "24:05", day_of_week=False))
