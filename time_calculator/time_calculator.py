@@ -3,7 +3,9 @@ def add_time(start, duration, day_of_week=False):
     minuts_start = get_minuts(start)
     hour_duration = get_hour(duration)
     minuts_duration = get_minuts(duration)
-    final = final_time(start, hour_start, minuts_start, hour_duration, minuts_duration, day_of_week)
+    final = final_time(
+        start, hour_start, minuts_start, hour_duration, minuts_duration, day_of_week
+    )
     return final
 
 
@@ -46,31 +48,42 @@ def count_days(hours: int) -> int:
 
 
 def days_of_week(day: str, total_days: int):
+    day = day.casefold()
+    print("===", day)
     days = {
         0: "Sunday",
         1: "Monday",
         2: "Tuesday",
         3: "Wednesday",
-        4: "Thurday",
+        4: "Thursday",
         5: "Friday",
-        6: "Saturday",
+        6: "saturDay",
     }
-    
+
     start = 0
     for key, value in days.items():
-        if day == value:
+        if day == value.casefold():
             start = key
+           
 
-    while(total_days > 0):
+    while total_days > 0:
         for key, day_of_week in days.items():
             start = start + 1
             if start == 6:
                 start = 0
         total_days = total_days - 1
-    
+
     for key, value in days.items():
         if key == start:
             return value
+
+
+def hour_after_long_period(total_hour: int) -> int:
+    hour = total_hour % 12
+    if hour == 0:
+        return 12
+    else:
+        return hour
 
 
 def final_time(
@@ -84,6 +97,7 @@ def final_time(
     hour = int(start_hour) + int(durarion_hour)
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
+    hour_after_long_time = hour_after_long_period(hour)
     period = get_period(start)
     next_day = check_next_day(hour, period)
     days = count_days(hour)
@@ -95,12 +109,18 @@ def final_time(
         if not (period == "PM" and hour == 12):
             hour = hour - 12
     if days:
-        day_week = days_of_week(day_of_week, days)
-        return f"{hour}:{minuts} {period}, {day_week} ({days} days later)"
+        if day_of_week:
+            day_week = days_of_week(day_of_week, days)
+            return (f"{hour_after_long_time}:{minuts} {period}, {day_week} ({days} days later)"
+            )
+        else:
+            return f"{hour_after_long_time}:{minuts} {period} ({days} days later)"
     if next_day:
         return f"{hour}:{minuts} {period} {next_day}"
+    elif day_of_week:
+        return f"{hour}:{minuts} {period}, {day_of_week}"
     else:
         return f"{hour}:{minuts} {period}"
 
 
-print(add_time("11:59 PM", "24:05", day_of_week=False))
+print(add_time("8:16 PM", "466:02", "tuesday"))
