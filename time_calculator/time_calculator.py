@@ -36,9 +36,11 @@ def get_period(start: str) -> str:
     return start.split(" ")[1]
 
 
-def check_next_day(hour: int, initial_period: str) -> str:
+def check_next_day(hour: int, initial_period: str, final_period: str) -> str:
     next_day = hour / 24
-    if (next_day == 1 or (initial_period == "PM" and (next_day > 0 and next_day < 1))):
+    if next_day == 1:
+        return "(next day)"
+    elif initial_period == "PM" and final_period == "AM" and next_day < 1:
         return "(next day)"
 
 
@@ -109,9 +111,9 @@ def final_time(
     hour = int(start_hour) + int(durarion_hour)
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
     initial_period = get_period(start)
-    next_day = check_next_day(hour, initial_period)
-    days = count_days(hour)
     final_period = get_changes_in_period(hour, initial_period)
+    next_day = check_next_day(hour, initial_period, final_period)
+    days = count_days(hour)
     hour = hour_after(hour)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
     if next_day:
