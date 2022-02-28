@@ -45,13 +45,13 @@ def check_next_day(
     extra_day = extra_day[0]
     if first_number == 1 and int(extra_day) == 0:
         if day_of_week:
-            day_week = all_days_of_week(day_of_week, first_number)
+            day_week = next_day_of_week(day_of_week, first_number)
             return f"{day_week} (next day)"
         else:
             return "(next day)"
     elif initial_period == "PM" and final_period == "AM" and next_day < 1:
         if day_of_week:
-            day_week = all_days_of_week(day_of_week, extra_day)
+            day_week = next_day_of_week(day_of_week, extra_day)
             return f"{day_week} (next day)"
         else:
             return "(next day)"
@@ -63,9 +63,8 @@ def count_days(hours: int) -> int:
         return days
 
 
-def all_days_of_week(day: str, total_days: int):
-    day = day.casefold()
-    days = {
+def names_week_day():
+    return {
         0: "Sunday",
         1: "Monday",
         2: "Tuesday",
@@ -75,6 +74,9 @@ def all_days_of_week(day: str, total_days: int):
         6: "saturDay",
     }
 
+
+def next_day_of_week(day: str, total_days: int):
+    days = names_week_day()
     iter_days = iter(days.items())
     if total_days == 0 or total_days == 1:
         for name in iter_days:
@@ -85,6 +87,10 @@ def all_days_of_week(day: str, total_days: int):
                     next_item = next(iter_days)
                     return next_item[1]
 
+
+def all_days_of_week(day: str, total_days: int):
+    day = day.casefold()
+    days = names_week_day()
     start = 0
     for key, value in days.items():
         if day == value.casefold():
