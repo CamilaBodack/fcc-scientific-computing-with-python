@@ -36,12 +36,23 @@ def get_period(start: str) -> str:
     return start.split(" ")[1]
 
 
-def check_next_day(hour: int, initial_period: str, final_period: str) -> str:
+def check_next_day(hour: int, initial_period: str, final_period: str, day_of_week: str) -> str:
     next_day = hour / 24
-    if next_day == 1:
-        return "(next day)"
+    first_number = int(str(next_day)[0])
+    extra_day = str(next_day).split(".")[1]
+    extra_day = extra_day[0]
+    if first_number == 1 and int(extra_day) == 0:
+        if day_of_week:
+            day_week = all_days_of_week(day_of_week, first_number)
+            return f"{day_week} (next day)"
+        else:
+            return "(next day)"
     elif initial_period == "PM" and final_period == "AM" and next_day < 1:
-        return "(next day)"
+        if day_of_week:
+            day_week = all_days_of_week(day_of_week, extra_days)
+            return f"{day_of_week} (next day)"
+        else:
+            return "(next day)"
 
 
 def count_days(hours: int) -> int:
@@ -50,7 +61,7 @@ def count_days(hours: int) -> int:
         return days
 
 
-def days_of_week(day: str, total_days: int):
+def all_days_of_week(day: str, total_days: int):
     day = day.casefold()
     days = {
         0: "Sunday",
@@ -61,6 +72,19 @@ def days_of_week(day: str, total_days: int):
         5: "Friday",
         6: "saturDay",
     }
+
+    iter_days = iter(days.items())
+    if total_days == 0 or total_days == 1:
+        for name in iter_days:
+            if name[1].casefold() == day.casefold():
+                if name[0] == 6:
+                    return "Sunday"
+                else:
+                    next_item = next(iter_days)
+                    return next_item[1]
+                
+                
+    
 
     start = 0
     for key, value in days.items():
@@ -87,15 +111,21 @@ def hour_after(total_hour: int) -> int:
         return hour
 
 
-def get_changes_in_period(total_hour: int, initial_period: str) -> str:
+def get_changes_in_period(total_hour: int, initial_period: str, next_day) -> str:
     period = total_hour / 24
     mid = str(period).split(".")[1]
     mid = mid[0]
     if int(mid) >= 5:
         if initial_period == "AM":
-            return "PM"
+            if next_day:
+                return "PM,"
+            else:
+                return "PM"
         elif initial_period == "PM":
-            return "AM"
+            if next_day:
+                return "AM,"
+            else:
+                return "AM"
     else:
         return initial_period
 
@@ -110,17 +140,21 @@ def final_time(
 ):
     hour = int(start_hour) + int(durarion_hour)
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
-    initial_period = get_period(start)
-    final_period = get_changes_in_period(hour, initial_period)
-    next_day = check_next_day(hour, initial_period, final_period)
     days = count_days(hour)
+    initial_period = get_period(start)
+    final_period = get_changes_in_period(hour, initial_period, next_day=False)
+    next_day = check_next_day(hour, initial_period, final_period, day_of_week)
+    next_day_period = get_changes_in_period(hour, initial_period, next_day)
     hour = hour_after(hour)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
     if next_day:
-        return f"{hour}:{minuts} {final_period} {next_day}" 
+        if day_of_week:
+            return f"{hour}:{minuts} {next_day_period} {next_day}" 
+        else:
+            return f"{hour}:{minuts} {final_period} {next_day}" 
     if days:
         if day_of_week:
-            day_week = days_of_week(day_of_week, days)
+            day_week = all_days_of_week(day_of_week, days)
             return f"{hour}:{minuts} {final_period}, {day_week} ({days} days later)"
         else:
             return f"{hour}:{minuts} {final_period} ({days} days later)" 
@@ -130,4 +164,4 @@ def final_time(
         return f"{hour}:{minuts} {final_period}"
 
 
-print(add_time("9:15 PM", "5:30", False))
+print(add_time("2:59 AM", "24:00", "saturDay"))
