@@ -120,7 +120,7 @@ def hour_after(total_hour: int) -> int:
         return hour
 
 
-def get_changes_in_period(total_hour: int, initial_period: str, next_day) -> str:
+def get_changes_in_period(total_hour: int, initial_period: str) -> str:
     period = total_hour / 24
     mid = str(period).split(".")[1]
     mid = mid[0]
@@ -145,9 +145,9 @@ def final_time(
     hour = hour + get_extra_hour(start_minuts, duration_minuts)
     days = count_days(hour)
     initial_period = get_period(start)
-    final_period = get_changes_in_period(hour, initial_period, next_day=False)
+    final_period = get_changes_in_period(hour, initial_period)
     next_day = check_next_day(hour, initial_period, final_period, day_of_week)
-    next_day_period = get_changes_in_period(hour, initial_period, next_day)
+    next_day_period = get_changes_in_period(hour, initial_period)
     hour = hour_after(hour)
     minuts = get_mod_minuts(start_minuts, duration_minuts)
     if next_day:
