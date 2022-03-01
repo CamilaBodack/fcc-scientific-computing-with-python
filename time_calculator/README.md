@@ -45,3 +45,9 @@ Do not import any Python libraries. Assume that the start times are valid times.
 All the text above was extracted from FCC time-calculador challenge's page.
 
 [FCC Reference](https://www.freecodecamp.org/learn/scientific-computing-with-python/scientific-computing-with-python-projects/time-calculator)
+
+--- 
+
+Tests results
+
+<img src="../imgs/tests_time_calculator.png">
