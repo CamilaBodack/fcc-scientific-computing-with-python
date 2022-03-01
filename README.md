@@ -2,11 +2,11 @@
 
 ## Projects
 
-1. Arithmetic Formatter :heavy_check_mark:
+1. [Arithmetic Formatter](https://github.com/CamilaBodack/fcc-scientific-computing-with-python/tree/main/arithmetic_formatter) 
 
-2. Time Calculator :hourglass_flowing_sand:
+2. [Time Calculator](https://github.com/CamilaBodack/fcc-scientific-computing-with-python/tree/main/time_calculator)
 
-3. Budget App :bar_chart:
+3. Budget App
 
 4. Polygon Area Calculator :triangular_ruler:
 
