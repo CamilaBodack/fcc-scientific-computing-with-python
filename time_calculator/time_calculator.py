@@ -55,7 +55,7 @@ def count_days(hours: int) -> int:
         return days
 
 
-def names_week_day():
+def names_week_days():
     return {
         0: "Sunday",
         1: "Monday",
@@ -68,7 +68,7 @@ def names_week_day():
 
 
 def next_day_of_week(day: str, checker: int):
-    days = names_week_day()
+    days = names_week_days()
     iter_days = iter(days.items())
     if checker == 0 or checker == 1:
         for name in iter_days:
@@ -79,28 +79,39 @@ def next_day_of_week(day: str, checker: int):
                 return next_item[1]
 
 
-def all_days_of_week(day: str, total_days: int):
+def final_week_day(day: str, total_days: int):
     day = day.casefold()
-    days = names_week_day()
-    start = 0
+    days = names_week_days()
+    start = get_starting_day(day)
+    final_week_day = loop_throught_days(total_days, start)
+    for key, value in days.items():
+        if key == final_week_day:
+            return value
+
+
+def get_starting_day(day: str) -> str:
+    days = names_week_days()
+    start_day = 0
     for key, value in days.items():
         if day == value.casefold():
-            start = key
+            start_day = key
+    return start_day
 
+
+def loop_throught_days(total_days: int, initial_day: int):
+    days = names_week_days()
+    week_day = initial_day
     while total_days > 0:
         for key in days.keys():
             if total_days == 0:
                 break
-            if start == 6:
-                start = 0
+            if week_day == 6:
+                week_day = 0
                 total_days = total_days - 1
                 continue
-            start = start + 1
+            week_day = week_day + 1
             total_days = total_days - 1
-
-    for key, value in days.items():
-        if key == start:
-            return value
+    return week_day
 
 
 def hour_after(total_hour: int) -> int:
@@ -142,10 +153,14 @@ def formatter_next_day(
 
 
 def formatter_long_period_days(
-    hour: int, minuts: str, days: int, final_period: str, day_of_week: str
+    hour: int,
+    minuts: str,
+    days: int,
+    final_period: str,
+    day_of_week: str,
 ) -> str:
     if day_of_week:
-        day_week = all_days_of_week(day_of_week, days)
+        day_week = final_week_day(day_of_week, days)
         return f"{hour}:{minuts} {final_period}, {day_week} ({days} days later)"
     return f"{hour}:{minuts} {final_period} ({days} days later)"
 
