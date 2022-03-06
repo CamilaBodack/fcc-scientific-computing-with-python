@@ -25,8 +25,8 @@ class Category:
                     total_amount = total_amount + value
         return total_amount
 
-    def has_amount(self, total_amount: int, withdraw_amount: int):
-        return (total_amount - withdraw_amount) > 0
+    def get_balance(self):
+        return self.check_amount_in_ledger()
 
 
 def create_spend_chart(categories):
@@ -34,5 +34,6 @@ def create_spend_chart(categories):
 
 
 food = Category("Food")
-food.deposit(100, "deposit")
-print(food.withdraw(100.10))
+food.deposit(900, "deposit")
+food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
+print(food.get_balance())
