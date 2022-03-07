@@ -28,12 +28,25 @@ class Category:
     def get_balance(self):
         return self.check_amount_in_ledger()
 
+    def transfer(self, amount: int, budget_instance):
+        actual_balance = self.get_balance()
+        if amount > actual_balance:
+            return False
+        self.ledger.append(
+            {"amount": -amount, "description": f"Transfer to {budget_instance.budget}"}
+        )
+        budget_instance.ledger.append(
+            {"amount": amount, "description": f"Transfer from {self.budget}"}
+        )
+        return True
+
 
 def create_spend_chart(categories):
     pass
 
 
 food = Category("Food")
+entertainment = Category("Entertainment")
 food.deposit(900, "deposit")
 food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
 print(food.get_balance())
