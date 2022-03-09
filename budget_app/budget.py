@@ -2,10 +2,14 @@ class Category:
     def __init__(self, budget: str):
         self.budget = budget
         self.ledger = []
-        title_line = f"***********{self.budget}**********".ljust(30, "*")
-        print(title_line)
-        for item in self.ledger:
-            print(f"{item}\n")
+        len_str_budget = len(str(self.budget))
+        len_side = (30 - len_str_budget) // 2
+        title_line = str(
+            "".ljust(len_side, "*") + f"{self.budget}" + "".rjust(len_side, "*")
+        ).center(30, "*") + "\n"
+        ledger_line = ""
+        for key, value in self.ledger:
+            print(value, "==========")
 
     def deposit(self, amount: int, description="") -> list:
         new_deposit = {"amount": amount, "description": description}
@@ -38,7 +42,10 @@ class Category:
             return False
         if funds:
             self.ledger.append(
-                {"amount": -amount, "description": f"Transfer to {budget_instance.budget}"}
+                {
+                    "amount": -amount,
+                    "description": f"Transfer to {budget_instance.budget}",
+                }
             )
             budget_instance.ledger.append(
                 {"amount": amount, "description": f"Transfer from {self.budget}"}
