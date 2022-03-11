@@ -8,8 +8,17 @@ class Category:
             "".ljust(len_side, "*") + f"{self.budget}" + "".rjust(len_side, "*")
         ).center(30, "*") + "\n"
         ledger_line = ""
-        for key, value in self.ledger:
-            print(value, "==========")
+    
+    def output(self):
+        ledger_line = ""
+        for item in self.ledger:
+            for key, value in item.items():
+                if key == "description":
+                    print(key, value)
+                    ledger_line = str(str(value).ljust(23, " "))
+                    ledger_line = f"{ledger_line:<23}"
+                    print(ledger_line)
+        return ledger_line
 
     def deposit(self, amount: int, description="") -> list:
         new_deposit = {"amount": amount, "description": description}
@@ -67,4 +76,4 @@ food = Category("Food")
 entertainment = Category("Entertainment")
 food.deposit(900, "deposit")
 food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
-print(food.get_balance())
+print(food.output())
