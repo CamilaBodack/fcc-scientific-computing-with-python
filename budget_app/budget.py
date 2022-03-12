@@ -1,9 +1,3 @@
-from numbers import Number
-from pyrsistent import l
-
-from sqlalchemy import Numeric
-
-
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
@@ -47,17 +41,17 @@ class Category:
             return True
         return False
 
-    def check_amount_in_ledger(self):
+    def check_amount_in_ledger(self) -> int:
         total_amount = 0
         for item in self.ledger:
             amount = dict(item)["amount"]
             total_amount = total_amount + amount
         return total_amount
 
-    def get_balance(self):
+    def get_balance(self) -> callable:
         return self.check_amount_in_ledger()
 
-    def transfer(self, amount: int, budget_instance):
+    def transfer(self, amount: int, budget_instance: object) -> bool:
         funds = self.check_funds(amount)
         actual_balance = self.get_balance()
         if amount > actual_balance:
@@ -74,14 +68,14 @@ class Category:
             )
             return True
 
-    def check_funds(self, amount: int):
+    def check_funds(self, amount: int) -> bool:
         balance = self.get_balance()
         if amount > balance:
             return False
         return True
 
 
-def create_spend_chart(categories):
+def create_spend_chart(categories: list) -> str:
     pass
 
 
