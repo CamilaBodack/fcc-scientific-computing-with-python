@@ -1,34 +1,38 @@
+from numbers import Number
+from pyrsistent import l
+
+from sqlalchemy import Numeric
+
+
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
         self.ledger = []
 
-
     def __str__(self):
         len_str_budget = len(str(self.budget))
         len_side = (30 - len_str_budget) // 2
-        title_line = str("".ljust(len_side, "*") + f"{self.budget}" + "".rjust(len_side, "*")
-    ).center(30, "*") + "\n"
-        ledger_line = self.output_description() + self.output_mount() + "\n"
-        print(ledger_line)
-    
-    def output_description(self):
-        ledger_desc = ""
-        for item in self.ledger:
-            for key, value in item.items():
-                if key == "description":
-                    ledger_desc = str(str(value).ljust(23, " ")[:23])
-        return ledger_desc
+        title_line = str(
+            "".ljust(len_side, "*") + f"{self.budget}" + "".rjust(len_side, "*")
+        ).center(30, "*")
+        ledger_lines = ""
+        for index in range(len(self.ledger)):
+            ledger_lines = ledger_lines + (
+                str(self.output_description(index) + self.output_amount(index)) + "\n"
+            )
+        total_line = f"Total: {self.check_amount_in_ledger()}"
+        return f"{title_line}\n{ledger_lines}{total_line}"
 
-    def output_mount(self):
-        ledger_mount = ""
-        for item in self.ledger:
-            for key, value in item.items():
-                if key == "amount":
-                    ledger_mount = str(str(value).ljust(7, " ")[:7])
-        return ledger_mount
+    def output_description(self, index: int) -> str:
+        ledger_item = self.ledger[index].items()
+        ledger_description = dict(ledger_item)["description"]
+        return ledger_description.ljust(23, " ")[:23]
 
-
+    def output_amount(self, index: int) -> str:
+        ledger_item = self.ledger[index].items()
+        ledger_amount = float(dict(ledger_item)["amount"])
+        ledger_amount = "{:.2f}".format((ledger_amount)).rjust(7, " ")
+        return ledger_amount
 
     def deposit(self, amount: int, description="") -> list:
         new_deposit = {"amount": amount, "description": description}
@@ -46,9 +50,8 @@ class Category:
     def check_amount_in_ledger(self):
         total_amount = 0
         for item in self.ledger:
-            for key, value in item.items():
-                if key == "amount":
-                    total_amount = total_amount + value
+            amount = dict(item)["amount"]
+            total_amount = total_amount + amount
         return total_amount
 
     def get_balance(self):
@@ -86,4 +89,4 @@ food = Category("Food")
 entertainment = Category("Entertainment")
 food.deposit(900, "deposit")
 food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
-print(food.output_mount())
+print(food.__str__())
