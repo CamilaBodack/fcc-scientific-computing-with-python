@@ -1,3 +1,6 @@
+from unicodedata import category
+
+
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
@@ -76,9 +79,13 @@ class Category:
 
 
 def create_spend_chart(categories: list) -> str:
-    for item in categories:
-        print(str(item), "======(c_c)====")
-    print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+    print(categories[0].ledger)
+    for index in range(len(categories)):
+        total_withdraw(categories[index].ledger)
+    #print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+
+def total_withdraw(object: category):
+    pass
 
 food = Category("Food")
 entertainment = Category("Entertainment")
