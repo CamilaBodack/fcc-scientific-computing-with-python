@@ -1,3 +1,4 @@
+import collections
 from unicodedata import category
 
 
@@ -80,17 +81,28 @@ class Category:
 
 def create_spend_chart(categories: list) -> str:
     total = []
+    total_amount = 0
     for item in categories:
         for category_data in item.ledger:
             if category_data["amount"] < 0:
                 total.append({"category": item.budget, "total": category_data["amount"]})
+    category_spent_list =  check_item_in_total(total)
+    
+    print("*******", category_spent_list)
     #print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
-def total_withdraw_by_category(object: category):
+def check_item_in_total(total: list):
+    total_by_category = []
+    for item in total:
+        total_by_category.append({"category": item["category"],"total": item["total"]})
+        for item in total_by_category:
+            print(item)
+            if item["category"] in total_by_category:
+                print("===")
+    return total_by_category
+   
 
 
-
-    pass
 
 food = Category("Food")
 entertainment = Category("Entertainment")
@@ -101,4 +113,4 @@ business.deposit(900, "deposit")
 food.withdraw(105.55)
 entertainment.withdraw(33.40)
 business.withdraw(10.99)
-create_spend_chart([business, food, entertainment])
+create_spend_chart([business, food, entertainment, food, business])
