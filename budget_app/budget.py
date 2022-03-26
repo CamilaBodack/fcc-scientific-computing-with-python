@@ -80,28 +80,34 @@ class Category:
 
 
 def create_spend_chart(categories: list) -> str:
-    total = []
-    total_amount = 0
+    all_withdraws_by_category = []
     for item in categories:
         for category_data in item.ledger:
             if category_data["amount"] < 0:
-                total.append({"category": item.budget, "total": category_data["amount"]})
-    category_spent_list =  check_item_in_total(total)
-    
-    print("*******", category_spent_list)
-    #print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+                all_withdraws_by_category.append(
+                    {"category": item.budget, "total": category_data["amount"]}
+                )
+    total_withdraws = total_withdraw(all_withdraws_by_category)
+    # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
-def check_item_in_total(total: list):
-    total_by_category = []
-    for item in total:
-        total_by_category.append({"category": item["category"],"total": item["total"]})
-        for item in total_by_category:
-            print(item)
-            if item["category"] in total_by_category:
-                print("===")
-    return total_by_category
-   
 
+def total_withdraw(all_withdraws_by_category: list) -> int:
+    total_withdraw = 0
+    for category_data in all_withdraws_by_category:
+        total_withdraw = total_withdraw + category_data["total"]
+    total_withdraw = total_withdraw * (-1)
+    return total_withdraw
+
+
+def total_by_category(all_withdraws_by_category: list):
+    total = total_withdraw(all_withdraws_by_category)
+    category_total = []
+    for category_data in all_withdraws_by_category:
+        category_percent = round(((category_data["total"] * (-1)) * 10) / total) * 10
+        category_total.append(
+            {"category": category_data["category"], "percent": category_percent}
+        )
+    return category_total
 
 
 food = Category("Food")
@@ -113,4 +119,4 @@ business.deposit(900, "deposit")
 food.withdraw(105.55)
 entertainment.withdraw(33.40)
 business.withdraw(10.99)
-create_spend_chart([business, food, entertainment, food, business])
+create_spend_chart([business, food, entertainment])
