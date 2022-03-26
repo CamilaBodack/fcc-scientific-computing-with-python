@@ -1,7 +1,3 @@
-import collections
-from unicodedata import category
-
-
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
