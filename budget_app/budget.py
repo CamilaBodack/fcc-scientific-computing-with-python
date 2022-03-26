@@ -84,6 +84,20 @@ def create_spend_chart(categories: list) -> str:
                     {"category": item.budget, "total": category_data["amount"]}
                 )
     total_withdraws = total_withdraw(all_withdraws_by_category)
+    percent_by_category_formatter = f"""Percentage spent by category
+                                        100|
+                                         90|
+                                         80|
+                                         70|
+                                         60|    
+                                         50|
+                                         40|
+                                         30|
+                                         20|
+                                         10|
+                                          0|
+                                            ----------
+                                    """
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
 
