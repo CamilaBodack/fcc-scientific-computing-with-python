@@ -1,3 +1,6 @@
+from re import A
+
+
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
@@ -83,21 +86,10 @@ def create_spend_chart(categories: list) -> str:
                 all_withdraws_by_category.append(
                     {"category": item.budget, "total": category_data["amount"]}
                 )
-    total_withdraws = total_withdraw(all_withdraws_by_category)
-    percent_by_category_formatter = f"""Percentage spent by category
-                                        100|
-                                         90|
-                                         80|
-                                         70|
-                                         60|    
-                                         50|
-                                         40|
-                                         30|
-                                         20|
-                                         10|
-                                          0|
-                                            ----------
-                                    """
+
+    percent_by_category_formatter = f"Percentage spent by category\n"
+    matrix = matrix_line_and_column(all_withdraws_by_category)
+
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
 
@@ -118,6 +110,26 @@ def total_by_category(all_withdraws_by_category: list):
             {"category": category_data["category"], "percent": category_percent}
         )
     return category_total
+
+
+def create_matrix(all_withdraws_by_category: list) -> list:
+    max_category_str_length = 0
+    len_category_objects = len(all_withdraws_by_category)
+    for item in all_withdraws_by_category:
+        if len(item["category"]) > max_category_str_length:
+            max_category_str_length = len(item["category"])
+    matrix_lines = (
+        12 + max_category_str_length
+    )  # 12 is the range of 0 - 10 plus sepator line
+    matrix_columns = 3 + (
+        len_category_objects * 3
+    )  #  3 is the len of percent number plus | plus extra final space
+    matrix = [["X" for column in range(matrix_columns)] for line in range(matrix_lines)]
+    return matrix
+
+
+def set_default_column_data(all_withdraws_by_category):
+    matrix = create_matrix(all_withdraws_by_category)
 
 
 food = Category("Food")
