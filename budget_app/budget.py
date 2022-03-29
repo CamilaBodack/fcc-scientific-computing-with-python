@@ -89,7 +89,8 @@ def create_spend_chart(categories: list) -> str:
 
     percent_by_category_formatter = f"Percentage spent by category\n"
     matrix = create_matrix(all_withdraws_by_category)
-    columns = set_default_column_data(all_withdraws_by_category)
+    matrix_default_values = set_default_column_data(all_withdraws_by_category)
+    fill_matrix_percent = fill_matrix_with_percent(all_withdraws_by_category, matrix_default_values)
 
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
@@ -129,7 +130,7 @@ def create_matrix(all_withdraws_by_category: list) -> list:
     return matrix
 
 
-def set_default_column_data(all_withdraws_by_category):
+def set_default_column_data(all_withdraws_by_category) -> list:
     matrix = create_matrix(all_withdraws_by_category)
     matrix[0][0] = "100|"
     matrix[1][0] = "90|"
@@ -146,8 +147,24 @@ def set_default_column_data(all_withdraws_by_category):
     
     for index, value in enumerate(range(len(all_withdraws_by_category))):
         matrix[11][index] = "-" * 3
+    return matrix
 
-    print(matrix)
+def fill_matrix_with_percent(all_withdraws_by_category: list, matrix: list):
+    percent_by_category = total_by_category(all_withdraws_by_category)
+    line = 11
+    column = 2
+    for item in percent_by_category:
+        line = set_percent_in_matrix()
+        percent = item["percent"]//10
+        set_percent_in_matrix(percent, matrix, line, column)
+
+def set_percent_in_matrix(percent: int, matrix: list, line: int, column: int):
+    for index in range(percent):
+        matrix[line][column] = " o "
+        line = line + 1
+        column = column + 1
+    return line, column
+
 
 food = Category("Food")
 entertainment = Category("Entertainment")
