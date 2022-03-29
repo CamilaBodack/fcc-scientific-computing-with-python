@@ -88,7 +88,8 @@ def create_spend_chart(categories: list) -> str:
                 )
 
     percent_by_category_formatter = f"Percentage spent by category\n"
-    matrix = matrix_line_and_column(all_withdraws_by_category)
+    matrix = create_matrix(all_withdraws_by_category)
+    columns = set_default_column_data(all_withdraws_by_category)
 
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
@@ -130,7 +131,23 @@ def create_matrix(all_withdraws_by_category: list) -> list:
 
 def set_default_column_data(all_withdraws_by_category):
     matrix = create_matrix(all_withdraws_by_category)
+    matrix[0][0] = "100|"
+    matrix[1][0] = "90|"
+    matrix[2][0] = "80|"
+    matrix[3][0] = "70|"
+    matrix[4][0] = "60|"
+    matrix[5][0] = "50|"
+    matrix[6][0] = "40|"
+    matrix[7][0] = "30|"
+    matrix[8][0] = "20|"
+    matrix[9][0] = "10|"
+    matrix[10][0] = "0|"
+    matrix[11][0] = "    "
+    
+    for index, value in enumerate(range(len(all_withdraws_by_category))):
+        matrix[11][index] = "-" * 3
 
+    print(matrix)
 
 food = Category("Food")
 entertainment = Category("Entertainment")
