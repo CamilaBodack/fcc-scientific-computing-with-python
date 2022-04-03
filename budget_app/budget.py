@@ -90,11 +90,14 @@ def create_spend_chart(categories: list) -> str:
     fill_matrix_percent = fill_matrix_with_percent(
         all_withdraws_by_category, matrix_default_values
     )
-    fill_matrix_categories_names = fill_matrix_category_name(
-        all_withdraws_by_category, matrix_default_values
+    fill_matrix_with_names = fill_matrix_category_name(
+        all_withdraws_by_category, fill_matrix_percent
     )
+    filled_matrix = f"{percent_by_category_formatter}{matrix}{fill_matrix_with_names}"
+    print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+    print(filled_matrix, end=" \n ")
 
-    # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+    #print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
 
 def total_withdraw(all_withdraws_by_category: list) -> int:
@@ -160,7 +163,10 @@ def fill_matrix_with_percent(all_withdraws_by_category: list, matrix):
         percent = item["percent"] // 10
         set_percent_in_matrix(percent, matrix, line, column)
         column = column + 1
-
+    column = column + 1
+    for item in range(0,10):
+        matrix[item][column] = " \n "
+    return matrix
 
 def fill_matrix_category_name(all_withdraws_by_category: list, matrix):
     categories = total_by_category(all_withdraws_by_category)
@@ -170,6 +176,12 @@ def fill_matrix_category_name(all_withdraws_by_category: list, matrix):
         category_name = item["category"]
         set_category_name_in_matrix(category_name, matrix, line, column)
         column = column + 1
+    categories_str = [name["category"] for name in categories]
+    max_str_len_category = len(max(categories_str, key=len))
+    for index in range(max_str_len_category):
+        matrix[index][column] = " \n "
+    return matrix
+    
 
 
 def set_percent_in_matrix(percent: int, matrix, line: int, column: int):
@@ -182,7 +194,7 @@ def set_category_name_in_matrix(name: str, matrix, line: int, column: int):
     for letter in name:
         matrix[line][column] = letter
         line = line + 1
-    print(matrix)
+    
 
 
 food = Category("Food")
