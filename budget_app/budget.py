@@ -87,14 +87,18 @@ def create_spend_chart(categories: list) -> str:
                     {"category": item.budget, "total": category_data["amount"]}
                 )
 
-    percent_by_category_formatter = f"Percentage spent by category\n"
     matrix_default_values = set_default_column_data(all_withdraws_by_category)
     fill_matrix_percent = fill_matrix_with_percent(all_withdraws_by_category)
     fill_matrix_with_names = fill_matrix_category_name(all_withdraws_by_category)
     fill_matrix_last_colum = set_last_column(all_withdraws_by_category)
-    filled_matrix = ""
+    fill_matrix = f"Percentage spent by category\\n"
+    for default_item in matrix_default_values:
+        fill_matrix = fill_matrix + default_item
+    for percent_column in fill_matrix_percent:
+        for column in percent_column:
+            fill_matrix = fill_matrix + column
+    print(fill_matrix, "VERIFY")
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
-    print(filled_matrix)
 
 
 def total_withdraw(all_withdraws_by_category: list) -> int:
@@ -164,6 +168,10 @@ def set_percent_in_matrix(percent: int):
     item_column_percent = []
     for index in range(percent):
         item_column_percent.append(" o ")
+    len_column = len(item_column_percent)
+    while len_column < 11:
+        item_column_percent.insert(0, "   ")
+        len_column = len(item_column_percent)
     item_column_percent.append("---")
     return item_column_percent
 
