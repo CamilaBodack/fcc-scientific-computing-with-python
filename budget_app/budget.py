@@ -1,6 +1,3 @@
-from webbrowser import get
-
-
 class Category:
     def __init__(self, budget: str):
         self.budget = budget
@@ -88,16 +85,19 @@ def create_spend_chart(categories: list) -> str:
                 )
 
     matrix_default_values = set_default_column_data(all_withdraws_by_category)
-    fill_matrix_percent = fill_matrix_with_percent(all_withdraws_by_category)
-    fill_matrix_with_names = fill_matrix_category_name(all_withdraws_by_category)
-    fill_matrix_last_colum = set_last_column(all_withdraws_by_category)
-    fill_matrix = f"Percentage spent by category\\n"
-    for default_item in matrix_default_values:
-        fill_matrix = fill_matrix + default_item
-    for percent_column in fill_matrix_percent:
-        for column in percent_column:
-            fill_matrix = fill_matrix + column
-    print(fill_matrix, "VERIFY")
+    matrix_percent = fill_matrix_with_percent(all_withdraws_by_category)
+    matrix_with_names = fill_matrix_category_name(all_withdraws_by_category)
+    matrix_last_colum = set_last_column(all_withdraws_by_category)
+    fill_matrix = f"Percentage spent by category\n"
+    matrix_str = ""
+    same_index = False
+    for index_default, item_default in enumerate(matrix_default_values):
+        for item_percent in matrix_percent:
+            for index_percent, each_percent_item in enumerate(item_percent):
+                if index_default == index_percent:
+                    same_index = True
+        if same_index:
+            matrix_str = matrix_str + item_default + each_percent_item
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
 
