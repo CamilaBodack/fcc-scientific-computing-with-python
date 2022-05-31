@@ -91,12 +91,15 @@ def create_spend_chart(categories: list) -> str:
     fill_matrix = f"Percentage spent by category\n"
 
     # % by category "o" times
-    percent_by_category = total_by_category(all_withdraws_by_category)
-    df_data = set_default_column_data(all_withdraws_by_category)
+    percent_and_name_dict = total_by_category(all_withdraws_by_category)
+    default_colum_data = set_default_column_data(all_withdraws_by_category)
 
+    # Extractor loops
     column_item = []
     max_len = 0
-    for item in percent_by_category:
+    for item, data in enumerate(zip_longest(percent_and_name_dict, default_colum_data)):
+        data 
+        item
         percent = item["percent"] // 10
         item_percent = set_percent_in_matrix(percent)
         category_name = item["category"]
@@ -107,7 +110,7 @@ def create_spend_chart(categories: list) -> str:
         if len(item) >= max_len:
             max_len = len(item)
 
-    for index in df_data:
+    for index in default_colum_data:
         column_item.insert(0, index)
 
     column_item
