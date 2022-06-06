@@ -97,17 +97,18 @@ def create_spend_chart(categories: list) -> str:
     # Extractor loops
     column_item = []
     for category in percent_and_name_dict:
-        for item , default_data in zip_longest(category, default_colum_data):
-            if item:
-                percent = category["percent"] // 10
-                item_percent = set_percent_in_matrix(percent)
-                category_name = category["category"]
-                column_name = set_category_name_in_matrix(category_name)
-                column_item.append(f"{item_percent}{column_name}")
-        column_item.append(default_data)
+        for cat, default_data in zip_longest(
+            dict(category).get("category"),
+            default_colum_data,
+            ):
+            # column_item.append(default_data)
+            percent = dict(category).get("percent") // 10
+            item_percent = set_percent_in_matrix(percent)
+            category_name = cat
+            column_name = set_category_name_in_matrix(category_name)
+            column_item.append(f"{default_data}{item_percent}{column_name}")
 
-    for item in column_item:
-        print(item, sep="\n")
+    print(column_item, "==")
 
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
