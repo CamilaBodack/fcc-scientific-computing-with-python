@@ -97,18 +97,24 @@ def create_spend_chart(categories: list) -> str:
     # Extractor loops
     column_item = []
     for category in percent_and_name_dict:
-        for cat, default_data in zip_longest(
-            dict(category).get("category"),
+        percent = dict(category).get("percent") // 10
+        item_percent = str(set_percent_in_matrix(percent)).replace(",'", "")
+        get_category_name = dict(category).get("category")
+        column_name = str(set_category_name_in_matrix(get_category_name)).replace(",'", "")
+        item_perc_name = item_percent + str(column_name)
+        for default_data, item_data in zip_longest(
             default_colum_data,
-            ):
-            # column_item.append(default_data)
-            percent = dict(category).get("percent") // 10
-            item_percent = set_percent_in_matrix(percent)
-            category_name = cat
-            column_name = set_category_name_in_matrix(category_name)
-            column_item.append(f"{default_data}{item_percent}{column_name}")
+            item_perc_name,
+        ):
+            print("===================", default_data)
+            print("+++++++++++++++++++", item_data)
+            column_item.append(f"{default_data}")
+            column_item.append(f"{item_data}")
 
-    print(column_item, "==")
+
+    #print(column_item, sep="\n")
+    #for item in column_item:
+    #    print(item)
 
     # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
@@ -165,6 +171,7 @@ def set_percent_in_matrix(percent: int) -> str:
         item_column_percent.insert(0, "   ")
         len_column = len(item_column_percent)
     item_column_percent.append("---")
+    print("////////////", item_column_percent)
     return str(item_column_percent)
 
 
