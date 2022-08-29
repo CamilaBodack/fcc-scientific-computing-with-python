@@ -78,47 +78,6 @@ class Category:
         return True
 
 
-def create_spend_chart(categories: list) -> str:
-    all_withdraws_by_category = []
-    for item in categories:
-        for category_data in item.ledger:
-            if category_data["amount"] < 0:
-                all_withdraws_by_category.append(
-                    {"category": item.budget, "total": category_data["amount"]}
-                )
-
-    # Data treatment to create the chart
-    fill_matrix = f"Percentage spent by category\n"
-
-    # % by category "o" times
-    percent_and_name_dict = total_by_category(all_withdraws_by_category)
-    default_colum_data = set_default_column_data(all_withdraws_by_category)
-
-    # Extractor loops
-    column_item = []
-    for category in percent_and_name_dict:
-        percent = dict(category).get("percent") // 10
-        item_percent = str(set_percent_in_matrix(percent)).replace(",'", "")
-        get_category_name = dict(category).get("category")
-        column_name = str(set_category_name_in_matrix(get_category_name)).replace(",'", "")
-        item_perc_name = item_percent + str(column_name)
-        for default_data, item_data in zip_longest(
-            default_colum_data,
-            item_perc_name,
-        ):
-            print("===================", default_data)
-            print("+++++++++++++++++++", item_data)
-            column_item.append(f"{default_data}")
-            column_item.append(f"{item_data}")
-
-
-    #print(column_item, sep="\n")
-    #for item in column_item:
-    #    print(item)
-
-    # print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
-
-
 def total_withdraw(all_withdraws_by_category: list) -> int:
     total_withdraw = 0
     for category_data in all_withdraws_by_category:
@@ -128,8 +87,8 @@ def total_withdraw(all_withdraws_by_category: list) -> int:
 
 
 def total_by_category(all_withdraws_by_category: list):
-    total = total_withdraw(all_withdraws_by_category)
     category_total = []
+    total = total_withdraw(all_withdraws_by_category)
     for category_data in all_withdraws_by_category:
         category_percent = round(((category_data["total"] * (-1)) * 10) / total) * 10
         category_total.append(
@@ -137,62 +96,32 @@ def total_by_category(all_withdraws_by_category: list):
         )
     return category_total
 
+def create_spend_chart(categories: list) -> str:
+    all_withdraws_by_category = []
+    for item in categories:
+        for category_data in item.ledger:
+            if category_data["amount"] < 0:
+                all_withdraws_by_category.append(
+                    {"category": item.budget, "total": category_data["amount"]}
+                )
+    total = total_by_category(all_withdraws_by_category)
+    spent_str = "Percentage spent by category \n"
+    max_str_len = 0
 
-def set_default_column_data(all_withdraws_by_category):
-    max_category_str_length = 0
-    column_zero_spaces = "    "
-    for item in all_withdraws_by_category:
-        if len(item["category"]) > max_category_str_length:
-            max_category_str_length = len(item["category"])
-    matrix_column_zero = [
-        "100|",
-        " 90|",
-        " 80|",
-        " 70|",
-        " 60|",
-        " 50|",
-        " 40|",
-        " 30|",
-        " 20|",
-        " 10|",
-        "  0|",
-    ]
-    for index in range(max_category_str_length):
-        matrix_column_zero.append(column_zero_spaces)
-    return matrix_column_zero
+    for item in total:
+        item_len = len(item.get("category"))
+        if item_len > max_str_len:
+            max_str_len = item_len 
+            
+    for index, item in enumerate(total):
+        decrement_len_count = max_str_len
+        while(decrement_len_count > 0):
+            percent = item.get('percent') // 10
+            category = item.get("category")
+            print(index, percent, category)
+    
 
-
-def set_percent_in_matrix(percent: int) -> str:
-    item_column_percent = []
-    for index in range(percent):
-        item_column_percent.append(" o ")
-    len_column = len(item_column_percent)
-    while len_column < 11:
-        item_column_percent.insert(0, "   ")
-        len_column = len(item_column_percent)
-    item_column_percent.append("---")
-    print("////////////", item_column_percent)
-    return str(item_column_percent)
-
-
-def set_last_column(all_withdraws_by_category: list):
-    last_column = []
-    categories = total_by_category(all_withdraws_by_category)
-    categories_str = [name["category"] for name in categories]
-    max_str_len_category = len(max(categories_str, key=len))
-    for index in range(10):
-        last_column.append("\n")
-    last_column.append("-")
-    for index in range(max_str_len_category):
-        last_column.append("\n")
-    return last_column
-
-
-def set_category_name_in_matrix(name: str):
-    column_name = []
-    for letter in name:
-        column_name.append(letter)
-    return column_name
+    print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 
 
 food = Category("Food")
